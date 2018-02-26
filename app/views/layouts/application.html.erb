@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= full_title(yield(:title)) %></title>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+    <meta name="theme-color" content="#6000d0" />
+    <%= favicon_link_tag 'favicon.ico' %>
+    <%= favicon_link_tag 'apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png' %>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= render 'partials/themes' %>
+    <%= render 'partials/stripe' if (params[:action] == 'checkout') %>
+  </head>
+
+  <body>
+    <%= render 'partials/header' %>
+    <%= yield %>
+    <%= render 'partials/footer' %>
+  </body>
+</html>

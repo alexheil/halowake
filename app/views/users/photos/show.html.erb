@@ -1,0 +1,483 @@
+<div class="wrapper dark-background">
+  <div class="container">
+    <div class="nameplate">
+      <img class="big-image" src="<%= @photo.image_url(:original) %>">
+    </div>
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="container">
+
+    <div class="nameplate border-bottom large-text">
+      <div class="vote_button">
+        <%= render 'users/partials/votes/vote_button' %>
+      </div>
+      <span class="vote_count"><%= render 'users/partials/votes/vote_count' %></span> - <%= @photo.title %><span class="tiny-text"> - posted on <%= @photo.created_at.strftime("%m.%d.%Y") %> by <%= link_to @user.username, user_path(@user) unless @user.profile.first_name.present? || @user.profile.last_name.present? %> 
+        <%= link_to(user_path(@user)) do %>
+          <%= @user.profile.first_name if @user.profile.first_name.present? %> <%= @user.profile.last_name if @user.profile.last_name.present? %>
+        <% end %>
+         - 
+        
+        <% if user_signed_in? && current_user != @user %>
+          <div class="first-column">
+            <% if current_user.following?(@user) %>
+              <%= form_for(current_user.active_relationships.find_by(followed_id: @user.id),
+                       html: { method: :delete }) do |f| %>
+                <%= f.submit "Unfollow", class: "follow" %>
+              <% end %>
+            <% else %>
+              <%= form_for(current_user.active_relationships.build) do |f| %>
+                <div><%= hidden_field_tag :followed_id, @user.id %></div>
+                <%= f.submit "Follow", class: "follow" %>
+              <% end %>
+            <% end %>
+          </div>
+        <% elsif user_signed_in? == false %>
+          <div class="first-column">
+            <%= link_to "Follow", sign_in_path %>
+          </div>
+        <% end %>
+
+        <% if user_signed_in? && current_user == @user %>
+          <span id="edit-photo-click">Edit this photo</span>
+        <% end %>
+
+      </span>
+    </div>
+
+    <% if @photo.for_sale == true %>
+      <div class="nameplate border-bottom">
+        <div class="first-column">
+          <div id="purchase-photo" class="submit-button">
+            Purchase
+          </div>
+        </div>
+        <div class="second-column">
+          <% if @photo.base_price.present? %>
+            <div class="one-sixth">
+              <div>
+                Base Price:
+              </div>
+              <%= @photo.base_price %> <%= @photo.currency %>
+            </div>
+          <% end %>
+          <% if @photo.base_price.present? %>
+            <div class="one-sixth">
+              <div>
+                Shipping Price:
+              </div>
+              <%= @photo.shipping_price %> <%= @photo.currency %>
+            </div>
+          <% end %>
+          <% if @photo.total_price.present? %>
+            <div class="one-sixth">
+              <div>
+                Total Price:
+              </div>
+              <%= @photo.total_price %> <%= @photo.currency %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @photo.is_photo == true && (@photo.camera.present? || @photo.lens.present? || @photo.aperture.present? || @photo.exposure.present? || @photo.flash.present? || @photo.focal_length.present? || @photo.iso.present?) %>
+      <div class="nameplate border-bottom">
+        <% if @photo.camera.present? %>
+          <div class="one-space-bottom medium-text">
+            <%= link_to @photo.camera, "https://www.amazon.com/s/ref=as_li_ss_tl?url=search-alias=aps&field-keywords=#{@photo.camera}&linkCode=ll2&tag=letlyrics08-20&linkId=293aefe04a0280e01bef782242640c24" %>
+          </div>
+        <% end %>
+        <% if @photo.lens.present? %>
+          <div class="one-sixth">
+            <div>
+              Lens:
+            </div>
+            <%= @photo.lens %>
+          </div>
+        <% end %>
+        <% if @photo.aperture.present? %>
+          <div class="one-sixth">
+            <div>
+              Aperture:
+            </div>
+            <%= @photo.aperture %>
+          </div>
+        <% end %>
+        <% if @photo.exposure.present? %>
+          <div class="one-sixth">
+            <div>
+              Exposure:
+            </div>
+            <%= @photo.exposure %>
+          </div>
+        <% end %>
+        <% if @photo.flash.present? %>
+          <div class="one-sixth">  
+            <div>
+              Flash:
+            </div>
+            <%= @photo.flash %>
+          </div>
+        <% end %>
+        <% if @photo.focal_length.present? %>
+          <div class="one-sixth"> 
+            <div>
+              Focal length:
+            </div>
+            <%= @photo.focal_length %>
+          </div>
+        <% end %>
+        <% if @photo.iso.present? %>
+          <div class="one-sixth">
+            <div>
+              ISO:
+            </div>
+            <%= @photo.iso %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if @photo.is_art == true && (@photo.tool.present? || @photo.medium.present? || @photo.surface.present? || @photo.size.present? || @photo.style.present?) %>
+      <div class="nameplate border-bottom">
+        <% if @photo.tool.present? %>
+          <div class="one-sixth">
+            <div>
+              Tool:
+            </div>
+            <%= @photo.tool %>
+          </div>
+        <% end %>
+        <% if @photo.medium.present? %>
+          <div class="one-sixth">
+            <div>
+              Medium:
+            </div>
+            <%= @photo.medium %>
+          </div>
+        <% end %>
+        <% if @photo.surface.present? %>
+          <div class="one-sixth">
+            <div>
+              Surface:
+            </div>
+            <%= @photo.surface %>
+          </div>
+        <% end %>
+        <% if @photo.style.present? %>
+          <div class="one-sixth">  
+            <div>
+              Style:
+            </div>
+            <%= @photo.style %>
+          </div>
+        <% end %>
+        <% if @photo.size.present? %>
+          <div class="one-sixth"> 
+            <div>
+              Size:
+            </div>
+            <%= @photo.size %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if @photo.description.present? %>
+      <div class="nameplate border-bottom">
+        <%= sanitize(@photo.description) %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+<% if @photo.for_sale == true %>
+  <div id="back"></div>
+  <div id="purchase-form">
+    <div class="profile-form-inside">
+      <div id="close-profile" class="one-space">
+        Close
+      </div>
+      <div class="medium-text one-space">
+        <%= @photo.title %>
+      </div>
+      <div class="one-space">
+        <%= @photo.total_price %> <%= @photo.currency %>
+      </div>
+      <%= form_for(Purchase.new, url: user_album_photo_purchases_path(@user, @album, @photo)) do |f| %>
+        <%= render 'partials/errors/photo_errors' %>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :quantity %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :quantity, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :pay_your_own_price %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :pay_your_own_price, class: "text-field" %>
+          </div>
+          <div class="one-space">
+            Put extra money in your artist's pocket. The Stripe fee for this transaction will be $<%= (@photo.total_price * 0.04 + 0.30).ceil %>.
+          </div>
+        </div>
+        <%= f.submit "Purchase", data: { disable_with: 'Loading...' }, class: "submit-button" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<% if user_signed_in? && current_user == @user %>
+
+  <div id="back"></div>
+  <div id="album-form">
+    <div class="profile-form-inside">
+      <div id="close-album" class="one-space">
+        Close
+      </div>
+
+      <%= form_for(@photo, url: user_album_photo_path(@user, @album, @photo)) do |f| %>
+        <%= render 'partials/errors/photo_errors' %>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :title %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :title, class: "text-field" %>
+          </div>
+        </div>
+        <% if @photo.image_data? %>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :remove_image %>
+            </div>
+            <div class="two-thirds">
+              <%= f.check_box :remove_image, class: "text-field" %>
+            </div>
+          </div>
+        <% end %>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :image %>
+          </div>
+          <div class="two-thirds">
+            <%= f.hidden_field :image, value: Photo.new.cached_image_data %>
+            <%= f.file_field :image %>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :is_photo %>
+          </div>
+          <div class="two-thirds">
+            <%= f.check_box :is_photo, class: "text-field", id: "is-photo-click" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :is_art %>
+          </div>
+          <div class="two-thirds">
+            <%= f.check_box :is_art, class: "text-field", id: "is-art-click" %>
+          </div>
+        </div>
+
+        <div class="field-padding border-bottom border-top">
+          Optional fields
+        </div>
+
+        <div id="photo-fields">
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :resolution %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :resolution, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :camera %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :camera, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :lens %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :lens, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :aperture %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :aperture, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :exposure %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :exposure, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :flash %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :flash, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :focal_length %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :focal_length, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :iso %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :iso, class: "text-field" %>
+            </div>
+          </div>
+        </div>
+
+        <div id="art-fields">
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :tool %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :tool, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :medium %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :medium, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :surface %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :surface, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :style %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :style, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :size %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :size, class: "text-field" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :description %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_area :description, class: "text-area" %>
+          </div>
+        </div>
+
+        <% if current_user.is_member %>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :for_sale %>
+            </div>
+            <div class="two-thirds">
+              <%= f.check_box :for_sale, class: "text-field", id: "for-sale" %>
+            </div>
+          </div>
+          <div id="for-sale-container">
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :base_price %>
+              </div>
+              <div class="two-thirds">
+                <%= f.text_field :base_price, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :downloadable %>
+              </div>
+              <div class="two-thirds">
+                <%= f.check_box :downloadable, class: "text-field", id: "downloadable" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :shippable %>
+              </div>
+              <div class="two-thirds">
+                <%= f.check_box :shippable, class: "text-field", id: "shippable" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :shipping_price %>
+              </div>
+              <div class="two-thirds">
+                <%= f.text_field :shipping_price, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :currency %>
+              </div>
+              <div class="two-thirds">
+                <%= f.text_field :currency, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :quantity %>
+              </div>
+              <div class="two-thirds">
+                <%= f.text_field :quantity, class: "text-field" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <%= f.submit "Update photo", data: { disable_with: 'Updating...' }, class: "submit-button" %>
+      <% end %>
+
+    </div>
+  </div>
+<% end %>

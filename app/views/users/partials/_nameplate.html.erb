@@ -1,0 +1,55 @@
+<div class="nameplate border-bottom">
+  <div class="first-column">
+
+    <% if user_signed_in? && current_user != @user %>
+      <div class="five-space-bottom">
+        <% if current_user.following?(@user) %>
+          <%= form_for(current_user.active_relationships.find_by(followed_id: @user.id),
+                   html: { method: :delete }) do |f| %>
+            <%= f.submit "Unfollow", class: "submit-button" %>
+          <% end %>
+        <% else %>
+          <%= form_for(current_user.active_relationships.build) do |f| %>
+            <div><%= hidden_field_tag :followed_id, @user.id %></div>
+            <%= f.submit "Follow", class: "submit-button" %>
+          <% end %>
+        <% end %>
+      </div>
+    <% elsif user_signed_in? == false %>
+      <div class="five-space-bottom">
+        <%= link_to "Follow", sign_in_path, class: "submit-button" %>
+      </div>
+    <% end %>
+
+    <% if @user.profile.image_url(:thumb).present? %>
+      <img class="thumbnail-image" src="<%= @user.profile.image_url(:thumb) %>">
+    <% end %>
+  </div>
+
+  <div class="second-column">
+    <div class="large-text mobile-two-space">
+      <%= link_to @user.username, user_path(@user) unless @user.profile.first_name.present? || @user.profile.last_name.present? %> 
+      <%= link_to(user_path(@user)) do %>
+        <%= @user.profile.first_name if @user.profile.first_name.present? %> <%= @user.profile.last_name if @user.profile.last_name.present? %>
+      <% end %><span class="tiny-text"> - <%= @user.followers.count %> followers
+      <% if @user.is_member %>
+        <%= " - " + @user.membership.membership_type %>
+      <% end %></span>
+    </div>
+
+    <div class="one-space">
+      <div class="one-space">
+        <%= @user.profile.age.to_s if @user.profile.age.present? %><%= " | " if @user.profile.age.present? %>
+        <%= @user.location.city if @user.location.city.present? %><%= ", " + @user.location.state if @user.location.state.present? %><%= ", " + @user.location.country if @user.location.country.present? %>
+      </div>
+      <div class="one-space">
+        <%= link_to "Website", @user.profile.website if @user.profile.website.present? %> <%= "|" if @user.profile.website.present? && (@user.profile.facebook_url.present? || @user.profile.twitter_url.present? || @user.profile.instagram_url.present?) %> <%= link_to @user.profile.facebook_handle, @user.profile.facebook_url, class: "facebook" if @user.profile.facebook_url.present? %> <%= "|" if @user.profile.facebook_url.present? && @user.profile.twitter_url.present? %> <%= link_to @user.profile.twitter_handle, @user.profile.twitter_url, class: "twitter" if @user.profile.twitter_url.present? %> <%= "|" if (@user.profile.twitter_url.present? || @user.profile.facebook_url.present?) && @user.profile.instagram_url.present? %> <%= link_to @user.profile.instagram_handle, @user.profile.instagram_url, class: "instagram" if @user.profile.instagram_url.present? %>
+      </div>
+      <div class="one-space">
+        <%= @user.profile.biography if @user.profile.biography.present? %>
+      </div>
+    </div>
+
+  </div>
+
+</div>

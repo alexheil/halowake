@@ -1,0 +1,36 @@
+<div class="back-second"></div>
+<div class="background"></div>
+
+<header class="wrapper">
+  <div class="home-header-container">
+    <nav class="home-nav">
+      <div class="home-site-title">
+        <%= link_to "Arctizona", root_url, class: "home-nav-links" %>
+      </div>
+      <ul>
+        <li><%= link_to "Discover", "#", class: "home-nav-links" %></li>
+        <% if user_signed_in? %>
+          <li><%= link_to "Your Page", user_path(current_user), class: "home-nav-links" %></li>
+          <li><%= link_to "Sign Out", sign_out_path, class: "home-nav-links" %></li>
+        <% else %>
+          <li><%= link_to "Sign in", sign_in_path, class: "home-nav-links" %></li>
+          <li><%= link_to "Register", register_path, class: "home-nav-links" %></li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrapper ten-space center white">
+  <div class="mini-container">
+    <div class="large-text">
+      Sign up or something
+    </div>
+    <div class="five-space">
+      Here's the reason you should sign up
+    </div>
+    <div>
+      <%= link_to "Sign up", register_path, class: "home-button" %>
+    </div>
+  </div>
+</main>

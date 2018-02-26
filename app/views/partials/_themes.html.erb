@@ -1,0 +1,36 @@
+<% if @user && @user.theme.present? && @user.theme.main_color.present? && @user.theme.main_color != "#5F00D0" %>
+  <meta name="theme-color" content="<%= @user.theme.main_color %>" />
+<% end %>
+
+
+<% if @user && @user.theme.present? %>
+  <style>
+    body {
+      color: <%= @user.theme.text_color %>;
+      background : <%= @user.theme.background_color %>;
+    }
+    a {
+      color: <%= @user.theme.link_color %>;
+    }
+    a:hover {
+      color: <%= @user.theme.hover_color %>
+    }
+    ::selection {
+      background: <%= @user.theme.main_color %>;
+    }
+    #edit-profile {
+      color: <%= @user.theme.link_color %>;
+      border: 2px solid <%= @user.theme.link_color %>;
+    }
+    #edit-profile:hover {
+      background: <%= @user.theme.link_color %>
+    }
+    #create-album {
+      color: <%= @user.theme.link_color %>;
+      border: 2px solid <%= @user.theme.link_color %>;
+    }
+    #create-album:hover {
+      background: <%= @user.theme.link_color %>
+    }
+  </style>
+<% end %>

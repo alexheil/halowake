@@ -1,0 +1,513 @@
+<div class="wrapper">
+  <div class="container">
+
+    <%= render 'users/partials/nameplate' %>
+
+    <% if user_signed_in? && current_user == @user %>
+      <div class="nameplate border-bottom">
+        <div class="first-column">
+          <div id="edit-profile">
+            Edit profile
+          </div>
+        </div>
+
+        <div class="second-column">
+          <div id="create-album">
+            Upload a photo
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="nameplate border-bottom large-text">
+      <%= @album.title %>
+      <% if user_signed_in? && current_user == @user %>
+        <span class="tiny-text"> - <span id="edit-album-click">Edit this album</span></span>
+      <% end %>
+    </div>
+
+    <% if @album.description.present? %>
+      <div class="nameplate border-bottom">
+        <%= sanitize(@album.description) %>
+      </div>
+    <% end %>
+
+    <main class="five-space">
+
+      <% if @album.photos.any? %>
+        <% @album.photos.each do |photo| %>
+        <div class="three-column relative">
+          <%= link_to(user_album_photo_path(@user, @album, photo)) do %>
+            <img class="thumbnail-image-three" src="<%= photo.image_url(:thumb) %>">
+          <% end %>
+          <div class="centered">
+            <div class="text-hover large-text">
+              +<%= photo.votes.count %>
+            </div>
+          </div>
+        </div>
+        <% end %>
+      <% end %>
+
+    </main>
+
+  </div>
+</div>
+
+<% if user_signed_in? && current_user == @user %>
+
+  <div id="back"></div>
+  <div id="profile-form">
+    <div class="profile-form-inside">
+      <div id="close-profile" class="one-space">
+        Close
+      </div>
+      <%= form_for(@profile, url: user_profile_path(@user)) do |f| %>
+        <%= render 'partials/errors/profile_errors' %>
+        
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :first_name %><br />
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :first_name, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :last_name %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :last_name, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :image %>
+          </div>
+          <%= f.hidden_field :image, value: Photo.new.cached_image_data %>
+          <div class="two-thirds">
+            <%= f.file_field :image %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :age %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :age, class: "text-field" %>
+          </div>
+        </div>
+
+        <%= fields_for :location, @location do |u| %>
+          <div class="field">
+            <div class="one-thirds">
+              <%= u.label :city %>
+            </div>
+            <div class="two-thirds">
+              <%= u.text_field :city, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= u.label :state %>
+            </div>
+            <div class="two-thirds">
+              <%= u.text_field :state, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= u.label :country %>
+            </div>
+            <div class="two-thirds">
+              <%= u.text_field :country, class: "text-field" %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :website %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :website, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :facebook_handle %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :facebook_handle, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :facebook_url %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :facebook_url, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :twitter_handle %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :twitter_handle, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :twitter_url %><br />
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :twitter_url, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :instagram_handle %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :instagram_handle, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :instagram_url %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :instagram_url, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :biography %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_area :biography, class: "text-area" %>
+          </div>
+        </div>
+
+          <%= fields_for :theme, @theme do |u| %>
+            <div class="field">
+              <div class="one-thirds">
+                <%= u.label :main_color %>
+              </div>
+              <div class="two-thirds">
+                <%= u.text_field :main_color, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= u.label :text_color %>
+              </div>
+              <div class="two-thirds">
+                <%= u.text_field :text_color, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= u.label :background_color %>
+              </div>
+              <div class="two-thirds">
+                <%= u.text_field :background_color, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= u.label :link_color %>
+              </div>
+              <div class="two-thirds">
+                <%= u.text_field :link_color, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= u.label :hover_color %>
+              </div>
+              <div class="two-thirds">
+                <%= u.text_field :hover_color, class: "text-field" %>
+              </div>
+            </div>
+          <% end %>
+
+         <%= f.submit "Update profile", data: { disable_with: 'Updating...' }, class: "submit-button" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<% if user_signed_in? && current_user == @user %>
+
+  <div id="back"></div>
+  <div id="album-form">
+    <div class="profile-form-inside">
+      <div id="close-album" class="one-space">
+        Close
+      </div>
+
+      <%= form_for(@photo, url: user_album_photos_path(@user, @album)) do |f| %>
+        <%= render 'partials/errors/photo_errors' %>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :title %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :title, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :image %>
+          </div>
+          <div class="two-thirds">
+            <%= f.hidden_field :image, value: Photo.new.cached_image_data %>
+            <%= f.file_field :image %>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :is_photo %>
+          </div>
+          <div class="two-thirds">
+            <%= f.check_box :is_photo, class: "text-field", id: "is-photo-click" %>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :is_art %>
+          </div>
+          <div class="two-thirds">
+            <%= f.check_box :is_art, class: "text-field", id: "is-art-click" %>
+          </div>
+        </div>
+
+        <div class="field-padding border-bottom border-top">
+          Optional fields
+        </div>
+
+        <div id="photo-fields">
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :resolution %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :resolution, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :camera %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :camera, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :lens %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :lens, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :aperture %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :aperture, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :exposure %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :exposure, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :flash %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :flash, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :focal_length %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :focal_length, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :iso %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :iso, class: "text-field" %>
+            </div>
+          </div>
+        </div>
+
+        <div id="art-fields">
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :tool %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :tool, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :medium %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :medium, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :surface %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :surface, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :style %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :style, class: "text-field" %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :size %>
+            </div>
+            <div class="two-thirds">
+              <%= f.text_field :size, class: "text-field" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :description %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_area :description, class: "text-area" %>
+          </div>
+        </div>
+
+        <% if current_user.is_member %>
+          <div class="field">
+            <div class="one-thirds">
+              <%= f.label :for_sale %>
+            </div>
+            <div class="two-thirds">
+              <%= f.check_box :for_sale, class: "text-field", id: "for-sale" %>
+            </div>
+          </div>
+          <div id="for-sale-container">
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :base_price %>
+              </div>
+              <div class="two-thirds">
+                <%= f.text_field :base_price, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :downloadable %>
+              </div>
+              <div class="two-thirds">
+                <%= f.check_box :downloadable, class: "text-field", id: "downloadable" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :shippable %>
+              </div>
+              <div class="two-thirds">
+                <%= f.check_box :shippable, class: "text-field", id: "shippable" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :shipping_price %>
+              </div>
+              <div class="two-thirds">
+                <%= f.text_field :shipping_price, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :currency %>
+              </div>
+              <div class="two-thirds">
+                <%= f.text_field :currency, class: "text-field" %>
+              </div>
+            </div>
+            <div class="field">
+              <div class="one-thirds">
+                <%= f.label :quantity %>
+              </div>
+              <div class="two-thirds">
+                <%= f.text_field :quantity, class: "text-field" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <%= f.submit "Create photo", data: { disable_with: 'Creating...' }, class: "submit-button" %>
+      <% end %>
+
+    </div>
+  </div>
+<% end %>
+
+<% if user_signed_in? && current_user == @user %>
+
+  <div id="back"></div>
+  <div id="edit-album-form">
+    <div class="profile-form-inside">
+      <div id="edit-close-album" class="one-space">
+        Close
+      </div>
+
+      <%= form_for(@album, url: user_album_path(@user)) do |f| %>
+        <%= render 'partials/errors/album_errors' %>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :title %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_field :title, class: "text-field" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :description %>
+          </div>
+          <div class="two-thirds">
+            <%= f.text_area :description, class: "text-area" %>
+          </div>
+        </div>
+        <%= f.submit "Update photo album", data: { disable_with: 'Updating...' }, class: "submit-button" %>
+      <% end %>
+
+    </div>
+  </div>
+<% end %>

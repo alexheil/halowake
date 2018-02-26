@@ -1,0 +1,52 @@
+<div class="wrapper">
+  <div class="container">
+
+    <div class="form-container">
+      <div class="three-space medium-text">
+        Membership options
+      </div>
+
+      <%= form_for(@membership, url: user_membership_path(@user)) do |f| %>
+
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :bronze %>
+          </div>
+          <div class="two-thirds">
+            <%= f.check_box :bronze, class: "text-field", id: "is-photo-click" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :silver %>
+          </div>
+          <div class="two-thirds">
+            <%= f.check_box :silver, class: "text-field", id: "is-photo-click" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :gold %>
+          </div>
+          <div class="two-thirds">
+            <%= f.check_box :gold, class: "text-field", id: "is-photo-click" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="one-thirds">
+            <%= f.label :platinum %>
+          </div>
+          <div class="two-thirds">
+            <%= f.check_box :platinum, class: "text-field", id: "is-photo-click" %>
+          </div>
+        </div>
+
+
+
+        <%= f.submit "Update membership", data: { disable_with: 'Updating...' }, class: "submit-button" %>
+      <% end %>
+
+    </div>
+
+  </div>
+</div>

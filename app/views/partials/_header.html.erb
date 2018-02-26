@@ -1,0 +1,30 @@
+<header class="wrapper">
+  <div class="header-container">
+    <nav class="nav">
+      <div class="site-title">
+        <%= link_to "Arctizona", root_url %>
+      </div>
+      <ul>
+        <li id="menu-click">Menu</li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div id="menu-container" class="side-header medium-text">
+  <ul>
+    <li id="close-menu">Close</li>
+    <li><%= link_to "Discover", "#", class: "nav-links" %></li>
+    <% if user_signed_in? %>
+      <% if current_user.is_member %>
+        <li><%= link_to "Your Page", user_path(current_user), class: "nav-links" %></li>
+        <li><%= link_to "Membership", edit_user_membership_path(current_user), class: "nav-links" %></li>
+        <li><%= link_to "Payment Settings", edit_user_payment_settings_path(current_user), class: "nav-links" %></li>
+      <% end %>
+      <li><%= link_to "Sign Out", sign_out_path, class: "nav-links" %></li>
+    <% else %>
+      <li><%= link_to "Sign In", sign_in_path, class: "nav-links" %></li>
+      <li><%= link_to "Register", register_path, class: "nav-links" %></li>
+    <% end %>
+  </ul>
+</div>

@@ -12,16 +12,23 @@ class Users::MembershipsController < ApplicationController
     @membership = @user.membership
 
     if @membership.copper?
-      
+      # create a Stripe membership
+      membership = Stripe::Subscription.create(
+
+      )
+
+      membership.save
+
+      if membership.save
+        @membership.update_attributes(
+          membership_type: params[:membership][:membership_type]
+        )
+      end
+
     else
-      
+      # grab Stripe membership and update it
     end
 
-    if @membership.update_attributes(membership_params)
-      redirect_to current_user
-    else
-      render 'edit'
-    end
   end
 
   private

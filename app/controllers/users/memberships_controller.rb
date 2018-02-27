@@ -10,6 +10,13 @@ class Users::MembershipsController < ApplicationController
 
   def update
     @membership = @user.membership
+
+    if @membership.copper?
+      
+    else
+      
+    end
+
     if @membership.update_attributes(membership_params)
       redirect_to current_user
     else

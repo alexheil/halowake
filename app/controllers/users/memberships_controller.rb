@@ -12,6 +12,8 @@ class Users::MembershipsController < ApplicationController
     @membership = @user.membership
 
     if @membership.copper?
+      # Find or create customer 
+
       # create a Stripe membership
       membership = Stripe::Subscription.create(
 

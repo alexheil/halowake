@@ -14,6 +14,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user.create_location(location_params)
     @user.create_theme(theme_params)
     @user.create_membership(membership_params)
+    # create Stripe customer then edit this in settings
   end
 
   # GET /resource/edit

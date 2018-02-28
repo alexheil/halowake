@@ -13,7 +13,7 @@ class Users::MembershipsController < ApplicationController
 
     if @membership.copper?
       # Find or create customer 
-
+      # if @user.customer_id.blank? / create customer else retreive customer
       # create a Stripe membership
       membership = Stripe::Subscription.create(
 

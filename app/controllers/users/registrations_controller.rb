@@ -15,7 +15,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user.create_theme(theme_params)
 
     @user.create_membership(membership_params)
-    
 
     # customer = Stripe::Customer.create({
     #  email: @user.email

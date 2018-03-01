@@ -15,9 +15,9 @@ class Users::MembershipsController < ApplicationController
       # Find or create customer 
       # if @user.customer_id.blank? / create customer else retreive customer
       # create a Stripe membership
-      membership = Stripe::Subscription.create(
-
-      )
+      membership = Stripe::Subscription.create({
+        customer: @user.customer_id,
+      })
 
       membership.save
 

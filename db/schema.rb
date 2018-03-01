@@ -172,7 +172,6 @@ ActiveRecord::Schema.define(version: 20180125192226) do
 
   create_table "users", force: :cascade do |t|
     t.string   "username",               default: "", null: false
-    t.string   "slug",                   default: "", null: false
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -190,9 +189,12 @@ ActiveRecord::Schema.define(version: 20180125192226) do
     t.integer  "failed_attempts",        default: 0,  null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.string   "slug",                   default: "", null: false
+    t.string   "customer_id",            default: ""
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["customer_id"], name: "index_users_on_customer_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true

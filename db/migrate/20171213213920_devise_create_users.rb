@@ -33,7 +33,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
       t.datetime :locked_at
 
       t.string :slug, null: false, default: ""
-      t.string :customer_id, default: ""
+      t.string :customer_id
 
       t.timestamps null: false
     end

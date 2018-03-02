@@ -33,7 +33,7 @@
         <%= @user.profile.first_name if @user.profile.first_name.present? %> <%= @user.profile.last_name if @user.profile.last_name.present? %>
       <% end %><span class="tiny-text"> - <%= @user.followers.count %> followers
       <% if @user.is_member %>
-        <%= " - " + @user.membership.membership_type %>
+        <%= " - " + @user.membership.membership_type %> - <%= @user.customer_id %>
       <% end %></span>
     </div>
 

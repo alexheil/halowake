@@ -29,6 +29,8 @@ class User < ApplicationRecord
   before_save :should_generate_new_friendly_id?, if: :username_changed?
   before_save :downcase_username
 
+  before_save :create_customer
+
   def validate_username
     if User.where(email: username).exists?
       errors.add(:username, :invalid)
@@ -78,6 +80,16 @@ class User < ApplicationRecord
   end
 
   private
+
+    def create_customer
+      if self.customer_id.blank?
+        # customer = Stripe::Customer.create({
+        #  email: @user.email
+        # })
+
+        self.customer_id = self.username
+      end
+    end
 
     def should_generate_new_friendly_id?
       username_changed?

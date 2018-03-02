@@ -10,11 +10,13 @@ class Users::MembershipsController < ApplicationController
 
   def update
     @membership = @user.membership
+    
+    # find customer
+    customer = Stripe::Customer.retrieve(@user.customer_id)
 
     # if user has subscription find it if not create it
 
-    if @membership.sub_id.blank?
-      # Find customer 
+    if @membership.membership_id.blank?
       # create a Stripe membership
       # membership = Stripe::Subscription.create({
       #  customer: @user.customer_id,
@@ -29,7 +31,6 @@ class Users::MembershipsController < ApplicationController
       # end
 
     else
-
       # grab Stripe membership and update it
     end
 

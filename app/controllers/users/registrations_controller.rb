@@ -16,6 +16,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     @user.create_membership(membership_params)
 
+    # need to make ids for each membership
+
     # customer = Stripe::Customer.create({
     #  email: @user.email
     # })

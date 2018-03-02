@@ -11,23 +11,25 @@ class Users::MembershipsController < ApplicationController
   def update
     @membership = @user.membership
 
-    if @membership.copper?
+    # if user has subscription find it if not create it
+
+    if @membership.sub_id.blank?
       # Find customer 
-      # if @user.customer_id.blank? / create customer else retreive customer
       # create a Stripe membership
-      membership = Stripe::Subscription.create({
-        customer: @user.customer_id,
-      })
+      # membership = Stripe::Subscription.create({
+      #  customer: @user.customer_id,
+      # })
 
-      membership.save
+      # membership.save
 
-      if membership.save
-        @membership.update_attributes(
-          membership_type: params[:membership][:membership_type]
-        )
-      end
+      # if membership.save
+      #  @membership.update_attributes(
+      #    membership_type: params[:membership][:membership_type]
+      #  )
+      # end
 
     else
+
       # grab Stripe membership and update it
     end
 
@@ -48,7 +50,7 @@ class Users::MembershipsController < ApplicationController
     end
 
     def membership_params
-      params.require(:membership).permit(:copper, :bronze, :bronze_id, :silver, :silver_id, :gold, :gold_id, :platinum, :platinum_id, :membership_type, :amount, :percent)
+      params.require(:membership).permit(:membership_id, :copper, :bronze, :bronze_id, :silver, :silver_id, :gold, :gold_id, :platinum, :platinum_id, :membership_type, :amount, :percent)
     end
 
 end

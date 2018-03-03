@@ -87,7 +87,13 @@ class User < ApplicationRecord
         #  email: @user.email
         # })
 
-        self.customer_id = self.username
+        # self.customer_id = customer.id
+      end
+    end
+
+    def edit_customer
+      if self.customer_id.present?
+        # retreive and update customer
       end
     end
 

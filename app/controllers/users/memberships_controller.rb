@@ -18,20 +18,23 @@ class Users::MembershipsController < ApplicationController
 
     if @membership.membership_id.blank?
       # create a Stripe membership
-      # membership = Stripe::Subscription.create({
-      #  customer: @user.customer_id,
-      # })
-
-      # membership.save
-
-      # if membership.save
-      #  @membership.update_attributes(
-      #    membership_type: params[:membership][:membership_type]
-      #  )
-      # end
+      subscription = Stripe::Subscription.create({
+       customer: customer.id,
+       # plan: @membership
+      })
 
     else
       # grab Stripe membership and update it
+      subscription = Stripe::Subscription.retrieve(@membership.membership_id)
+    end
+
+    subscription.save
+
+    if subscription.save
+      @membership.update_attributes(
+        membership_id: subscription.id
+        membership_type: params[:membership][:membership_type]
+      )
     end
 
   end

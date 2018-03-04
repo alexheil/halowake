@@ -91,12 +91,6 @@ class User < ApplicationRecord
       end
     end
 
-    def edit_customer
-      if self.customer_id.present?
-        # retreive and update customer
-      end
-    end
-
     def should_generate_new_friendly_id?
       username_changed?
     end

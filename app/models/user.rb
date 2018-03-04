@@ -87,7 +87,7 @@ class User < ApplicationRecord
         #  email: @user.email
         # })
 
-        self.customer_id = customer.id
+        # self.customer_id = customer.id
       end
     end
 

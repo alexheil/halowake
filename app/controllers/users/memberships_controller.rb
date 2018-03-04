@@ -20,12 +20,16 @@ class Users::MembershipsController < ApplicationController
       # create a Stripe membership
       subscription = Stripe::Subscription.create({
        customer: customer.id,
-       # plan: @membership
+       # plan: @membership,
       })
 
     else
       # grab Stripe membership and update it
       subscription = Stripe::Subscription.retrieve(@membership.membership_id)
+      subscription.items = [{
+        id: subscription.items.data[0].id,
+        #plan: @membership,
+      }]
     end
 
     subscription.save

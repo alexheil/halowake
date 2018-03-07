@@ -10,6 +10,8 @@ class Users::MembershipsController < ApplicationController
 
   def update
     @membership = @user.membership
+
+    # update current_id to match plan id
     
     # find customer
     customer = Stripe::Customer.retrieve(@user.customer_id)

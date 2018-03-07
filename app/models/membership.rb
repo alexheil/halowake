@@ -11,7 +11,6 @@ class Membership < ApplicationRecord
     def bronze_member
       if self.bronze?
         self.membership_type = "Bronze"
-        self.membership_id = "bronze_id"
         self.silver = 0
         self.gold = 0
         self.platinum = 0
@@ -23,7 +22,6 @@ class Membership < ApplicationRecord
     def silver_member
       if self.silver?
         self.membership_type = "Silver"
-        self.membership_id = "silver_id"
         self.bronze = 0
         self.gold = 0
         self.platinum = 0
@@ -35,7 +33,6 @@ class Membership < ApplicationRecord
     def gold_member
       if self.gold?
         self.membership_type = "Gold"
-        self.membership_id = "gold_id"
         self.bronze = 0
         self.silver = 0
         self.platinum = 0
@@ -47,7 +44,6 @@ class Membership < ApplicationRecord
     def platinum_member
       if self.platinum?
         self.membership_type = "Platinum"
-        self.membership_id = "platinum_id"
         self.bronze = 0
         self.silver = 0
         self.gold = 0

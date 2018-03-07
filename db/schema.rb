@@ -37,18 +37,18 @@ ActiveRecord::Schema.define(version: 20180125192226) do
     t.string   "membership_id",   default: ""
     t.boolean  "copper",          default: true
     t.boolean  "bronze",          default: false
-    t.string   "bronze_id",       default: ""
+    t.string   "bronze_id",       default: "bronze_id"
     t.boolean  "silver",          default: false
-    t.string   "silver_id",       default: ""
+    t.string   "silver_id",       default: "silver_id"
     t.boolean  "gold",            default: false
-    t.string   "gold_id",         default: ""
+    t.string   "gold_id",         default: "gold_id"
     t.boolean  "platinum",        default: false
-    t.string   "platinum_id",     default: ""
+    t.string   "platinum_id",     default: "platinum_id"
     t.string   "membership_type", default: "Copper"
     t.integer  "amount",          default: 0
     t.integer  "percent",         default: 20
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 

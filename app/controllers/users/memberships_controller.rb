@@ -28,7 +28,7 @@ class Users::MembershipsController < ApplicationController
       subscription = Stripe::Subscription.retrieve(@membership.membership_id)
       subscription.items = [{
         id: subscription.items.data[0].id,
-        # plan: @membership,
+        #plan: @membership,
       }]
     end
 

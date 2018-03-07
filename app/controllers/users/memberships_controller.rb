@@ -12,7 +12,10 @@ class Users::MembershipsController < ApplicationController
     @membership = @user.membership
 
     # update current_id to match plan id
-    
+    # if bronze = 1
+    #   @membership.current_id = "bronze_id"
+    # end
+
     # find customer
     customer = Stripe::Customer.retrieve(@user.customer_id)
 
@@ -22,7 +25,7 @@ class Users::MembershipsController < ApplicationController
       # create a Stripe membership
       subscription = Stripe::Subscription.create({
        customer: customer.id,
-       # plan: @membership,
+       # plan: @membership.current_id,
       })
 
     else
@@ -30,7 +33,7 @@ class Users::MembershipsController < ApplicationController
       subscription = Stripe::Subscription.retrieve(@membership.membership_id)
       subscription.items = [{
         id: subscription.items.data[0].id,
-        # plan: @membership,
+        # plan: @membership.current_id,
       }]
     end
 

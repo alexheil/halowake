@@ -12,9 +12,15 @@ class Users::MembershipsController < ApplicationController
     @membership = @user.membership
 
     # update current_id to match plan id
-    # if bronze = 1
-    #   @membership.current_id = "bronze_id"
-    # end
+    if @membership.bronze?
+      @membership.current_id = "bronze_id"
+    elsif @membership.silver?
+      @membership.current_id = "silver_id"
+    elsif @membership.gold?
+      @membership.current_id = "gold_id"
+    elsif @membership.platinum?
+      @membership.current_id = "platinum_id"
+    end
 
     # find customer
     customer = Stripe::Customer.retrieve(@user.customer_id)

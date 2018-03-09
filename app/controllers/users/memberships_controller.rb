@@ -20,7 +20,7 @@ class Users::MembershipsController < ApplicationController
       @membership.current_id = "gold_id"
     elsif @membership.platinum?
       @membership.current_id = "platinum_id"
-    end
+    # end
 
     # find customer
     customer = Stripe::Customer.retrieve(@user.customer_id)

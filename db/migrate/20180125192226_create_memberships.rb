@@ -3,6 +3,7 @@ class CreateMemberships < ActiveRecord::Migration[5.0]
     create_table :memberships do |t|
       t.references :user
       t.string :membership_id, default: ""
+      t.string :current_id, default: ""
       t.boolean :copper, default: true
       t.boolean :bronze, default: false
       t.string :bronze_id, default: "bronze_id"

@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20180125192226) do
   create_table "memberships", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "membership_id",   default: ""
+    t.string   "current_id",      default: ""
     t.boolean  "copper",          default: true
     t.boolean  "bronze",          default: false
     t.string   "bronze_id",       default: "bronze_id"

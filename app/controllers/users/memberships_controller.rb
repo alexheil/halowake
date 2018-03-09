@@ -29,17 +29,19 @@ class Users::MembershipsController < ApplicationController
 
     if @membership.membership_id.blank?
       # create a Stripe membership
-      subscription = Stripe::Subscription.create({
-       customer: customer.id,
-       # plan: @membership.current_id,
-      })
+      subscription = Stripe::Subscription.create(
+        customer: customer.id,
+        items: {
+          plan: @membership.current_id
+        }
+      )
 
     else
       # grab Stripe membership and update it
       subscription = Stripe::Subscription.retrieve(@membership.membership_id)
       subscription.items = [{
         id: subscription.items.data[0].id,
-        # plan: @membership.current_id,
+        plan: @membership.current_id
       }]
     end
 

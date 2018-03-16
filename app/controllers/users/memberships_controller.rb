@@ -26,7 +26,6 @@ class Users::MembershipsController < ApplicationController
     customer = Stripe::Customer.retrieve(@user.customer_id)
 
     # if user has subscription find it if not create it
-
     if @membership.membership_id.blank?
       # create a Stripe membership
       subscription = Stripe::Subscription.create(

@@ -44,7 +44,7 @@ class Users::MembershipsController < ApplicationController
       }]
     end
 
-    # subscription.save
+    subscription.save
 
     if subscription.save
       @membership.update_attributes(

@@ -14,6 +14,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user.create_location(location_params)
     @user.create_theme(theme_params)
     @user.create_membership(membership_params)
+  
+    Stripe.api_key = Rails.configuration.stripe[:secret_key]
+
+    customer = Stripe::Customer.create({
+      email: @user.email
+    })
+
+    @user.update_attributes(
+      customer_id: customer.id
+    )
   end
 
   # GET /resource/edit

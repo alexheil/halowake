@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  if Rails.env.production?
+    mount Shrine.presign_endpoint(:cache) => '/presign'
+  end
+
   root 'static_pages#home'
 
   get 'privacy' => 'static_pages#privacy'
@@ -26,7 +30,7 @@ Rails.application.routes.draw do
         resources :purchases, controller: 'users/purchases', only: [:create, :edit, :update, :destroy] do
           member do
             get 'checkout'
-            #patch 'charge'
+            # patch 'charge'
           end
         end
       end

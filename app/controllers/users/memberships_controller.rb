@@ -12,15 +12,11 @@ class Users::MembershipsController < ApplicationController
     @membership = @user.membership
 
     # update current_id to match plan id
-    if @membership.bronze?
-      @membership.current_id = "bronze_id"
-    elsif @membership.silver?
-      @membership.current_id = "silver_id"
-    elsif @membership.gold?
-      @membership.current_id = "gold_id"
-    elsif @membership.platinum?
-      @membership.current_id = "platinum_id"
-    end
+    @membership.update_attributes(
+      current_id: params[:membership][:membership_type] + "_id"
+    )
+   
+    Stripe.api_key = "sk_test_ECd3gjeIEDsGkySmF8FQOC5i"
 
     # find customer
     customer = Stripe::Customer.retrieve(@user.customer_id)
@@ -28,13 +24,10 @@ class Users::MembershipsController < ApplicationController
     # if user has subscription find it if not create it
     if @membership.membership_id.blank?
       # create a Stripe membership
-      subscription = Stripe::Subscription.create(
-        customer: customer.id,
-        items: {
-          plan: @membership.current_id
-        }
-      )
-
+      subscription = Stripe::Subscription.create({
+      customer: customer.id,
+        items: [{plan: @membership.current_id}],
+      })
     else
       # grab Stripe membership and update it
       subscription = Stripe::Subscription.retrieve(@membership.membership_id)
@@ -48,9 +41,10 @@ class Users::MembershipsController < ApplicationController
 
     if subscription.save
       @membership.update_attributes(
-        membership_id: subscription.id
+        membership_id: subscription.id,
         membership_type: params[:membership][:membership_type]
       )
+      redirect_to user_path(@user)
     end
 
   end
@@ -70,7 +64,7 @@ class Users::MembershipsController < ApplicationController
     end
 
     def membership_params
-      params.require(:membership).permit(:membership_id, :copper, :bronze, :bronze_id, :silver, :silver_id, :gold, :gold_id, :platinum, :platinum_id, :membership_type, :amount, :percent)
+      params.require(:membership).permit(:membership_id, :current_id, :copper, :bronze, :bronze_id, :silver, :silver_id, :gold, :gold_id, :platinum, :platinum_id, :membership_type, :amount, :percent)
     end
 
 end
